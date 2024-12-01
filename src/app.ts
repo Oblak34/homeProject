@@ -1,17 +1,19 @@
 import express, {Express, Request, Response} from "express";
 import {videosRouter} from "./routes/videos-router";
 import {testRouter} from "./routes/tests-router";
+import {SETTINGS} from "./settings";
 
 export const app: Express = express()
 
 app.use(express.json())
 
-app.use('/videos', videosRouter)
-app.use('/__test__/data', testRouter)
+app.use(SETTINGS.PATH.VIDEOS, videosRouter)
+app.use('/testing/all-data', testRouter)
 
 app.get('/', (req: Request, res: Response) => {
-    res.json({word: 'Hello World!'})
+    res.status(200).json({version: '1.0'})
 })
+
 
 
 

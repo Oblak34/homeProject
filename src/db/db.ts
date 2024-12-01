@@ -3,7 +3,7 @@ export type VideoType = {
     author: string,
     title: string,
     canBeDownloaded: boolean,
-    minAgeRestriction: number,
+    minAgeRestriction: number | null,
     createdAt: string,
     publicationDate: string,
     availableResolutions: string[]
@@ -11,7 +11,7 @@ export type VideoType = {
 
 export const db: {videos: VideoType[]} = {
     videos: [
-        // {
+        //  {
         //     id: 1,
         //     author: 'Disney',
         //     title: 'Mikky Maus',
@@ -42,4 +42,13 @@ export const db: {videos: VideoType[]} = {
         //     availableResolutions: ["P144", "P240", "P360"]
         // }
     ]
+}
+
+export const setDB = (dataset: VideoType[]) => {
+    if (!dataset) {
+        db.videos = []
+        return
+    }
+
+    db.videos = dataset || db.videos
 }

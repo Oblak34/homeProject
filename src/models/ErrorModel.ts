@@ -4,6 +4,6 @@ export type ErrorMessage = {
 }
 
 export type ErrorModel = {
-    errorMessages: ErrorMessage[]
+    errorsMessages: ErrorMessage[]
 }
 

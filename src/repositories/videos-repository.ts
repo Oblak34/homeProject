@@ -1,5 +1,5 @@
 import {db} from "../db/db";
-import {VideoViewModel} from "../videos/VideoViewModel";
+import {VideoViewModel} from "../models/VideoViewModel";
 
 
 export const videosRepository = {
@@ -13,34 +13,37 @@ export const videosRepository = {
 
     createVideo(title: string, author: string, availableResolutions: string[]){
 
+        const createdAt =new Date()
+        const publicationDate = new Date()
+        publicationDate.setDate(createdAt.getDate() + 1)
+
         const newVideo: VideoViewModel = {
             id: +(new Date()),
             author: author,
             title: title,
-            canBeDownloaded: true,
-            minAgeRestriction: 0,
-            createdAt: new Date().toISOString().slice(-3, 3),
-            publicationDate: new Date().toISOString().slice(-3, 3),
+            canBeDownloaded: false,
+            minAgeRestriction: null,
+            createdAt: createdAt.toISOString(),
+            publicationDate: publicationDate.toISOString(),
             availableResolutions: [...availableResolutions]
         }
             db.videos.push(newVideo)
             return newVideo
     },
 
-    updateVideo(id: string, title: string, author:string , availableResolutions: string[], canBeDownloaded: boolean, minAgeRestriction: number) {
+    updateVideo(id: string, title: string, author:string , availableResolutions?: string[], canBeDownloaded?: boolean, minAgeRestriction?: number,publicationDate?:string) {
 
-        let date = new Date()
-        date.setDate(date.getDate() + 1)
+
 
         let foundVideo: VideoViewModel | undefined = db.videos.find(v => v.id === +id)
 
         if(foundVideo){
             foundVideo.title = title
             foundVideo.author = author
-            foundVideo.availableResolutions = availableResolutions
-            foundVideo.canBeDownloaded = canBeDownloaded
-            foundVideo.minAgeRestriction = minAgeRestriction
-            foundVideo.publicationDate = date.toISOString().slice(-3, 3)
+            foundVideo.availableResolutions = availableResolutions ? availableResolutions :foundVideo.availableResolutions
+            foundVideo.canBeDownloaded = canBeDownloaded ? canBeDownloaded :foundVideo.canBeDownloaded
+            foundVideo.minAgeRestriction = minAgeRestriction ? minAgeRestriction :foundVideo.minAgeRestriction
+            foundVideo.publicationDate = publicationDate  ? publicationDate :foundVideo.publicationDate
 
             return foundVideo
         }else{
